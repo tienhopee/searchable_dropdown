@@ -16,7 +16,7 @@ class DropdownButtonProps extends IconButtonProps {
     super.highlightColor,
     super.splashColor,
     super.disabledColor,
-    super.mouseCursor = SystemMouseCursors.click,
+    super.mouseCursor = SystemMouseCursors.basic,
     super.focusNode,
     super.autofocus = false,
     super.tooltip,

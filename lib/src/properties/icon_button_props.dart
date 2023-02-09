@@ -40,7 +40,7 @@ class IconButtonProps {
     this.highlightColor,
     this.splashColor,
     this.disabledColor,
-    this.mouseCursor = SystemMouseCursors.click,
+    this.mouseCursor = SystemMouseCursors.basic,
     this.focusNode,
     this.autofocus = false,
     this.tooltip,
