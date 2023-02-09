@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef Widget WidgetCheckBox(BuildContext context, bool isChecked);
@@ -35,8 +34,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
   @override
   void didUpdateWidget(covariant CheckBoxWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.isChecked != oldWidget.isChecked)
-      isCheckedNotifier.value = widget.isChecked;
+    if (widget.isChecked != oldWidget.isChecked) isCheckedNotifier.value = widget.isChecked;
   }
 
   @override
@@ -55,15 +53,13 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
               //to ignore inner clicks or custom clicks from custom layout
               ignoring: true,
               child: Row(mainAxisSize: MainAxisSize.max, children: [
-                widget.layout != null
-                    ? Expanded(child: widget.layout!(context, v == true))
-                    : Container(),
+                widget.layout != null ? Expanded(child: widget.layout!(context, v == true)) : Container(),
                 widget.checkBox != null
                     ? widget.checkBox!(context, v == true)
-                    : Checkbox(
-                        value: v, onChanged: widget.isDisabled ? null : (b) {}),
+                    : Checkbox(value: v, onChanged: widget.isDisabled ? null : (b) {}),
               ]),
             ),
+            mouseCursor: SystemMouseCursors.basic,
           );
         });
   }

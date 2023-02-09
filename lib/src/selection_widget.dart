@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
-import 'package:dropdown_search/src/properties/selection_list_view_props.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../dropdown_search.dart';
-import 'properties/scrollbar_props.dart';
-import 'properties/text_field_props.dart';
 import 'widgets/checkbox_widget.dart';
 
 class SelectionWidget<T> extends StatefulWidget {
@@ -147,9 +144,7 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
 
     Future.delayed(
       Duration.zero,
-      () => _manageItemsByFilter(
-          widget.searchFieldProps?.controller?.text ?? '',
-          isFistLoad: true),
+      () => _manageItemsByFilter(widget.searchFieldProps?.controller?.text ?? '', isFistLoad: true),
     );
   }
 
@@ -212,42 +207,30 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
                       child: Scrollbar(
                         controller: widget.scrollbarProps?.controller,
                         isAlwaysShown: widget.scrollbarProps?.isAlwaysShown,
-                        showTrackOnHover:
-                            widget.scrollbarProps?.showTrackOnHover,
+                        showTrackOnHover: widget.scrollbarProps?.showTrackOnHover,
                         hoverThickness: widget.scrollbarProps?.hoverThickness,
                         thickness: widget.scrollbarProps?.thickness,
                         radius: widget.scrollbarProps?.radius,
-                        notificationPredicate:
-                            widget.scrollbarProps?.notificationPredicate,
+                        notificationPredicate: widget.scrollbarProps?.notificationPredicate,
                         interactive: widget.scrollbarProps?.interactive,
                         child: ListView.builder(
                           shrinkWrap: widget.selectionListViewProps.shrinkWrap,
                           padding: widget.selectionListViewProps.padding,
-                          scrollDirection:
-                              widget.selectionListViewProps.scrollDirection,
+                          scrollDirection: widget.selectionListViewProps.scrollDirection,
                           reverse: widget.selectionListViewProps.reverse,
                           controller: widget.selectionListViewProps.controller,
                           primary: widget.selectionListViewProps.primary,
                           physics: widget.selectionListViewProps.physics,
                           itemExtent: widget.selectionListViewProps.itemExtent,
-                          addAutomaticKeepAlives: widget
-                              .selectionListViewProps.addAutomaticKeepAlives,
-                          addRepaintBoundaries: widget
-                              .selectionListViewProps.addRepaintBoundaries,
-                          addSemanticIndexes:
-                              widget.selectionListViewProps.addSemanticIndexes,
-                          cacheExtent:
-                              widget.selectionListViewProps.cacheExtent,
-                          semanticChildCount:
-                              widget.selectionListViewProps.semanticChildCount,
-                          dragStartBehavior:
-                              widget.selectionListViewProps.dragStartBehavior,
-                          keyboardDismissBehavior: widget
-                              .selectionListViewProps.keyboardDismissBehavior,
-                          restorationId:
-                              widget.selectionListViewProps.restorationId,
-                          clipBehavior:
-                              widget.selectionListViewProps.clipBehavior,
+                          addAutomaticKeepAlives: widget.selectionListViewProps.addAutomaticKeepAlives,
+                          addRepaintBoundaries: widget.selectionListViewProps.addRepaintBoundaries,
+                          addSemanticIndexes: widget.selectionListViewProps.addSemanticIndexes,
+                          cacheExtent: widget.selectionListViewProps.cacheExtent,
+                          semanticChildCount: widget.selectionListViewProps.semanticChildCount,
+                          dragStartBehavior: widget.selectionListViewProps.dragStartBehavior,
+                          keyboardDismissBehavior: widget.selectionListViewProps.keyboardDismissBehavior,
+                          restorationId: widget.selectionListViewProps.restorationId,
+                          clipBehavior: widget.selectionListViewProps.clipBehavior,
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             var item = snapshot.data![index];
@@ -279,9 +262,9 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
     };
     if (widget.popupValidationMultiSelectionWidget != null)
       return InkWell(
-        child: widget.popupValidationMultiSelectionWidget!(
-            context, _selectedItems),
+        child: widget.popupValidationMultiSelectionWidget!(context, _selectedItems),
         onTap: onValidate,
+        mouseCursor: SystemMouseCursors.basic,
       );
 
     return Column(
@@ -373,15 +356,10 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
       return _syncItems.where((i) {
         if (widget.filterFn != null)
           return (widget.filterFn!(i, filter));
-        else if (i
-            .toString()
-            .toLowerCase()
-            .contains(filter?.toLowerCase() ?? 'null'))
+        else if (i.toString().toLowerCase().contains(filter?.toLowerCase() ?? 'null'))
           return true;
         else if (widget.itemAsString != null) {
-          return (widget.itemAsString!(i))
-              .toLowerCase()
-              .contains(filter?.toLowerCase() ?? 'null');
+          return (widget.itemAsString!(i)).toLowerCase().contains(filter?.toLowerCase() ?? 'null');
         }
         return false;
       }).toList();
@@ -446,6 +424,7 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
     return (widget.itemBuilder != null)
         ? InkWell(
             // ignore pointers in itemBuilder
+            mouseCursor: SystemMouseCursors.basic,
             child: IgnorePointer(
               ignoring: true,
               child: widget.itemBuilder!(
@@ -461,6 +440,7 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
             title: Text(_selectedItemAsString(item)),
             selected: !widget.showSelectedItems ? false : _isSelectedItem(item),
             onTap: _isDisabled(item) ? null : () => _handleSelectedItem(item),
+            mouseCursor: SystemMouseCursors.basic,
           );
   }
 
@@ -484,8 +464,7 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
       );
   }
 
-  bool _isDisabled(T item) =>
-      widget.itemDisabled != null && (widget.itemDisabled!(item)) == true;
+  bool _isDisabled(T item) => widget.itemDisabled != null && (widget.itemDisabled!(item)) == true;
 
   /// selected item will be highlighted only when [widget.showSelectedItems] is true,
   /// if our object is String [widget.compareFn] is not required , other wises it's required
@@ -502,93 +481,74 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
   }
 
   Widget _searchField() {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          widget.popupTitle ?? const SizedBox.shrink(),
-          if (widget.showSearchBox)
-            Padding(
-              padding:
-                  widget.searchFieldProps?.padding ?? const EdgeInsets.all(8.0),
-              child: TextField(
-                style: widget.searchFieldProps?.style,
-                controller: widget.searchFieldProps?.controller,
-                focusNode: widget.focusNode,
-                onChanged: (f) {
-                  //if controller !=null , the change event will be handled by
-                  // the controller
-                  if (widget.searchFieldProps?.controller == null)
-                    _debouncer(() {
-                      _onTextChanged(f);
-                    });
-                },
-                decoration: widget.searchFieldProps?.decoration ??
-                    InputDecoration(
-                      hintText: widget.hintText,
-                      border: const OutlineInputBorder(),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16),
-                    ),
-                keyboardType: widget.searchFieldProps?.keyboardType,
-                textInputAction: widget.searchFieldProps?.textInputAction,
-                textCapitalization:
-                    widget.searchFieldProps?.textCapitalization ??
-                        TextCapitalization.none,
-                strutStyle: widget.searchFieldProps?.strutStyle,
-                textAlign:
-                    widget.searchFieldProps?.textAlign ?? TextAlign.start,
-                textAlignVertical: widget.searchFieldProps?.textAlignVertical,
-                textDirection: widget.searchFieldProps?.textDirection,
-                readOnly: widget.searchFieldProps?.readOnly ?? false,
-                toolbarOptions: widget.searchFieldProps?.toolbarOptions,
-                showCursor: widget.searchFieldProps?.showCursor,
-                obscuringCharacter:
-                    widget.searchFieldProps?.obscuringCharacter ?? '•',
-                obscureText: widget.searchFieldProps?.obscureText ?? false,
-                autocorrect: widget.searchFieldProps?.autocorrect ?? true,
-                smartDashesType: widget.searchFieldProps?.smartDashesType,
-                smartQuotesType: widget.searchFieldProps?.smartQuotesType,
-                enableSuggestions:
-                    widget.searchFieldProps?.enableSuggestions ?? true,
-                maxLines: widget.searchFieldProps?.maxLines ?? 1,
-                minLines: widget.searchFieldProps?.minLines,
-                expands: widget.searchFieldProps?.expands ?? false,
-                maxLengthEnforcement:
-                    widget.searchFieldProps?.maxLengthEnforcement,
-                maxLength: widget.searchFieldProps?.maxLength,
-                onAppPrivateCommand:
-                    widget.searchFieldProps?.onAppPrivateCommand,
-                inputFormatters: widget.searchFieldProps?.inputFormatters,
-                enabled: widget.searchFieldProps?.enabled,
-                cursorWidth: widget.searchFieldProps?.cursorWidth ?? 2.0,
-                cursorHeight: widget.searchFieldProps?.cursorHeight,
-                cursorRadius: widget.searchFieldProps?.cursorRadius,
-                cursorColor: widget.searchFieldProps?.cursorColor,
-                selectionHeightStyle:
-                    widget.searchFieldProps?.selectionHeightStyle ??
-                        ui.BoxHeightStyle.tight,
-                selectionWidthStyle:
-                    widget.searchFieldProps?.selectionWidthStyle ??
-                        ui.BoxWidthStyle.tight,
-                keyboardAppearance: widget.searchFieldProps?.keyboardAppearance,
-                scrollPadding: widget.searchFieldProps?.scrollPadding ??
-                    const EdgeInsets.all(20.0),
-                dragStartBehavior: widget.searchFieldProps?.dragStartBehavior ??
-                    DragStartBehavior.start,
-                enableInteractiveSelection:
-                    widget.searchFieldProps?.enableInteractiveSelection ?? true,
-                selectionControls: widget.searchFieldProps?.selectionControls,
-                onTap: widget.searchFieldProps?.onTap,
-                mouseCursor: widget.searchFieldProps?.mouseCursor,
-                buildCounter: widget.searchFieldProps?.buildCounter,
-                scrollController: widget.searchFieldProps?.scrollController,
-                scrollPhysics: widget.searchFieldProps?.scrollPhysics,
-                autofillHints: widget.searchFieldProps?.autofillHints,
-                restorationId: widget.searchFieldProps?.restorationId,
-              ),
-            )
-        ]);
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
+      widget.popupTitle ?? const SizedBox.shrink(),
+      if (widget.showSearchBox)
+        Padding(
+          padding: widget.searchFieldProps?.padding ?? const EdgeInsets.all(8.0),
+          child: TextField(
+            style: widget.searchFieldProps?.style,
+            controller: widget.searchFieldProps?.controller,
+            focusNode: widget.focusNode,
+            onChanged: (f) {
+              //if controller !=null , the change event will be handled by
+              // the controller
+              if (widget.searchFieldProps?.controller == null)
+                _debouncer(() {
+                  _onTextChanged(f);
+                });
+            },
+            decoration: widget.searchFieldProps?.decoration ??
+                InputDecoration(
+                  hintText: widget.hintText,
+                  border: const OutlineInputBorder(),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+            keyboardType: widget.searchFieldProps?.keyboardType,
+            textInputAction: widget.searchFieldProps?.textInputAction,
+            textCapitalization: widget.searchFieldProps?.textCapitalization ?? TextCapitalization.none,
+            strutStyle: widget.searchFieldProps?.strutStyle,
+            textAlign: widget.searchFieldProps?.textAlign ?? TextAlign.start,
+            textAlignVertical: widget.searchFieldProps?.textAlignVertical,
+            textDirection: widget.searchFieldProps?.textDirection,
+            readOnly: widget.searchFieldProps?.readOnly ?? false,
+            toolbarOptions: widget.searchFieldProps?.toolbarOptions,
+            showCursor: widget.searchFieldProps?.showCursor,
+            obscuringCharacter: widget.searchFieldProps?.obscuringCharacter ?? '•',
+            obscureText: widget.searchFieldProps?.obscureText ?? false,
+            autocorrect: widget.searchFieldProps?.autocorrect ?? true,
+            smartDashesType: widget.searchFieldProps?.smartDashesType,
+            smartQuotesType: widget.searchFieldProps?.smartQuotesType,
+            enableSuggestions: widget.searchFieldProps?.enableSuggestions ?? true,
+            maxLines: widget.searchFieldProps?.maxLines ?? 1,
+            minLines: widget.searchFieldProps?.minLines,
+            expands: widget.searchFieldProps?.expands ?? false,
+            maxLengthEnforcement: widget.searchFieldProps?.maxLengthEnforcement,
+            maxLength: widget.searchFieldProps?.maxLength,
+            onAppPrivateCommand: widget.searchFieldProps?.onAppPrivateCommand,
+            inputFormatters: widget.searchFieldProps?.inputFormatters,
+            enabled: widget.searchFieldProps?.enabled,
+            cursorWidth: widget.searchFieldProps?.cursorWidth ?? 2.0,
+            cursorHeight: widget.searchFieldProps?.cursorHeight,
+            cursorRadius: widget.searchFieldProps?.cursorRadius,
+            cursorColor: widget.searchFieldProps?.cursorColor,
+            selectionHeightStyle: widget.searchFieldProps?.selectionHeightStyle ?? ui.BoxHeightStyle.tight,
+            selectionWidthStyle: widget.searchFieldProps?.selectionWidthStyle ?? ui.BoxWidthStyle.tight,
+            keyboardAppearance: widget.searchFieldProps?.keyboardAppearance,
+            scrollPadding: widget.searchFieldProps?.scrollPadding ?? const EdgeInsets.all(20.0),
+            dragStartBehavior: widget.searchFieldProps?.dragStartBehavior ?? DragStartBehavior.start,
+            enableInteractiveSelection: widget.searchFieldProps?.enableInteractiveSelection ?? true,
+            selectionControls: widget.searchFieldProps?.selectionControls,
+            onTap: widget.searchFieldProps?.onTap,
+            mouseCursor: widget.searchFieldProps?.mouseCursor,
+            buildCounter: widget.searchFieldProps?.buildCounter,
+            scrollController: widget.searchFieldProps?.scrollController,
+            scrollPhysics: widget.searchFieldProps?.scrollPhysics,
+            autofillHints: widget.searchFieldProps?.autofillHints,
+            restorationId: widget.searchFieldProps?.restorationId,
+          ),
+        )
+    ]);
   }
 
   Widget _favoriteItemsWidget() {
@@ -619,8 +579,7 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
             constraints: BoxConstraints(minWidth: constraints.maxWidth),
             child: Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment:
-                    widget.favoriteItemsAlignment ?? MainAxisAlignment.start,
+                mainAxisAlignment: widget.favoriteItemsAlignment ?? MainAxisAlignment.start,
                 children: favoriteItems
                     .map(
                       (f) => InkWell(
@@ -639,6 +598,7 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
                                 )
                               : _favoriteItemDefaultWidget(f),
                         ),
+                        mouseCursor: SystemMouseCursors.basic,
                       ),
                     )
                     .toList()),
@@ -651,29 +611,22 @@ class _SelectionWidgetState<T> extends State<SelectionWidget<T>> {
   void _handleSelectedItem(T newSelectedItem) {
     if (widget.isMultiSelectionMode) {
       if (_isSelectedItem(newSelectedItem)) {
-        _selectedItemsNotifier.value = List.from(_selectedItems)
-          ..removeWhere((i) => _isEqual(newSelectedItem, i));
-        if (widget.popupOnItemRemoved != null)
-          widget.popupOnItemRemoved!(_selectedItems, newSelectedItem);
+        _selectedItemsNotifier.value = List.from(_selectedItems)..removeWhere((i) => _isEqual(newSelectedItem, i));
+        if (widget.popupOnItemRemoved != null) widget.popupOnItemRemoved!(_selectedItems, newSelectedItem);
       } else {
-        _selectedItemsNotifier.value = List.from(_selectedItems)
-          ..add(newSelectedItem);
-        if (widget.popupOnItemAdded != null)
-          widget.popupOnItemAdded!(_selectedItems, newSelectedItem);
+        _selectedItemsNotifier.value = List.from(_selectedItems)..add(newSelectedItem);
+        if (widget.popupOnItemAdded != null) widget.popupOnItemAdded!(_selectedItems, newSelectedItem);
       }
     } else {
       Navigator.pop(context);
-      if (widget.onChanged != null)
-        widget.onChanged!(List.filled(1, newSelectedItem));
+      if (widget.onChanged != null) widget.onChanged!(List.filled(1, newSelectedItem));
     }
   }
 
   Widget _favoriteItemDefaultWidget(T item) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).primaryColorLight),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Theme.of(context).primaryColorLight),
       child: Row(
         children: [
           Text(
@@ -711,7 +664,6 @@ class Debouncer {
 
   void call(Function action) {
     _timer?.cancel();
-    _timer = Timer(
-        delay ?? const Duration(milliseconds: 500), action as void Function());
+    _timer = Timer(delay ?? const Duration(milliseconds: 500), action as void Function());
   }
 }
